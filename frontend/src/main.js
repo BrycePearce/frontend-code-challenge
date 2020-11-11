@@ -3,6 +3,9 @@ import App from "./App.vue";
 import router from "./router";
 import store from "./store";
 
+// normalize css across browsers
+import "./assets/normalize.css";
+
 Vue.config.productionTip = false;
 
 new Vue({
