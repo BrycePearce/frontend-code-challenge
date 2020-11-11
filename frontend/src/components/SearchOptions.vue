@@ -33,7 +33,6 @@ export default {
 
 <style scoped lang="scss">
 @import "@/assets/_variables.scss";
-@import "@/assets/_variables.scss";
 
 .search-options {
   display: grid;

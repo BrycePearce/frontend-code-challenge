@@ -1,11 +1,12 @@
 <template>
   <div id="app">
-    <!-- Header -->
-    <nav>
-      <router-link to="/">All</router-link>
-      <router-link to="/about">Favorites</router-link>
-    </nav>
-    <SearchOptions></SearchOptions>
+    <div class="header">
+      <nav>
+        <router-link to="/">All</router-link>
+        <router-link to="/about">Favorites</router-link>
+      </nav>
+      <SearchOptions></SearchOptions>
+    </div>
 
     <!-- Body -->
     <transition name="fade" mode="out-in">
@@ -31,6 +32,11 @@ export default {
 body {
   /* Fallback fonts. Uses the first found */
   font-family: "Segoe UI", "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+.header {
+  margin-bottom: 1rem;
+  box-shadow: 0 2px 3px rgba(68, 66, 66, 0.5);
   padding: 1rem;
 }
 
