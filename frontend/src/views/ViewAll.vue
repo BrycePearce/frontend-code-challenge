@@ -27,5 +27,7 @@ export default {
 main {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
+  padding: 1rem 0.5rem;
+  row-gap: 1rem;
 }
 </style>

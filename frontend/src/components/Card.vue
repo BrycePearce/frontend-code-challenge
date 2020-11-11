@@ -44,7 +44,7 @@ export default {
   display: flex;
   position: relative;
   flex-direction: column;
-  border: 3px solid $base-gray;
+  border: 2px solid $base-gray;
   border-radius: 0.25rem;
   width: 9.5rem;
 

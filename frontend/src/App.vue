@@ -35,7 +35,6 @@ body {
 }
 
 .header {
-  margin-bottom: 1rem;
   box-shadow: 0 2px 3px rgba(68, 66, 66, 0.5);
   padding: 1rem;
 }
