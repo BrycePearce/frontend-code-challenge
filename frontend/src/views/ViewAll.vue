@@ -4,7 +4,7 @@
       <Card :pokemon="pokemon" :key="pokemon.id" />
     </template>
   </main>
-  <main v-else>Loading...</main>
+  <main v-else>Loading your Poke-pals!</main>
 </template>
 
 <script>

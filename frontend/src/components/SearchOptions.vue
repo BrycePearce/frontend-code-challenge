@@ -1,19 +1,30 @@
 <template>
   <div class="search-options">
-    <input placeholder="Search" type="text" aria-label="Search" />
-    <select aria-label="Type">
+    <input
+      v-model="searchText"
+      @input="updatePreferenceStore('text', searchText)"
+      placeholder="Search"
+      type="text"
+      aria-label="Search"
+    />
+    <!-- todo: clean this up, arrow rotation/scroll -->
+    <select
+      v-model="selectedFilter"
+      @change="updatePreferenceStore('type', selectedFilter)"
+      aria-label="Type"
+    >
       <option value="" disabled selected hidden>Type</option>
-      <option value="Temp">Temp</option>
+      <option v-for="filter in filterTypes" :key="filter">{{ filter }}</option>
     </select>
     <div class="filter-btns">
-      <button>
+      <button @click="updatePreferenceStore('view', 'list')">
         <svg height="50" viewBox="0 0 24 24" width="50">
           <path d="M0 0h24v24H0z" fill="none" />
           <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
         </svg>
       </button>
       <div class="vertical-spacer"></div>
-      <button>
+      <button @click="updatePreferenceStore('view', 'grid')">
         <svg height="50" viewBox="0 0 24 24" width="50">
           <path d="M0 0h24v24H0z" fill="none" />
           <path
@@ -26,8 +37,34 @@
 </template>
 
 <script>
+import * as api from "../api/api";
+
 export default {
   name: "SearchOptions",
+  mounted() {
+    this.getPokemonTypes();
+  },
+  data() {
+    return {
+      searchText: "",
+      selectedFilter: "",
+      filterTypes: [],
+    };
+  },
+  methods: {
+    async getPokemonTypes() {
+      const pokemonTypesQuery = "query { pokemonTypes }";
+      const { data } = await api.getPokemonData(pokemonTypesQuery);
+      this.filterTypes = data.pokemonTypes;
+    },
+    updatePreferenceStore(modifiedKey, updatedValue) {
+      const payload = {
+        modifiedKey,
+        updatedValue,
+      };
+      this.$store.dispatch("setSearchPreferences", payload);
+    },
+  },
 };
 </script>
 
@@ -53,7 +90,7 @@ export default {
 
   select {
     display: block;
-    // position: relative;
+    position: relative;
     -moz-appearance: none;
     -webkit-appearance: none;
     appearance: none;
@@ -71,6 +108,16 @@ export default {
       fill: green;
     }
     background-position: right 5px top 50%;
+
+    option {
+      background-color: white;
+      font-size: medium;
+      color: black;
+      overflow-y: scroll;
+      :hover {
+        background: $base-green;
+      }
+    }
   }
 
   @media screen and (min-width: $medium-screen) {

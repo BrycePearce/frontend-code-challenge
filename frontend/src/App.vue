@@ -26,12 +26,17 @@ export default {
   components: {
     SearchOptions,
   },
-  async mounted() {
-    const { data } = await api.getPokemonData(
-      ["name", "types", "isFavorite", "id", "image"],
-      -1
-    );
-    this.$store.dispatch("setPokemonList", data);
+  mounted() {
+    this.setPokemonDataStore();
+  },
+  methods: {
+    async setPokemonDataStore() {
+      const basicPokemonDataQuery =
+        "query { pokemons(query: { limit: -1, offset: 0 }) { edges { name, types, isFavorite, id, image } } }";
+
+      const { data } = await api.getPokemonData(basicPokemonDataQuery);
+      this.$store.dispatch("setPokemonList", data);
+    },
   },
 };
 </script>

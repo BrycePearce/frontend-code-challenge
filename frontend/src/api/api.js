@@ -1,10 +1,9 @@
 import axiosInstance from "./AxiosInstance";
 
-export async function getPokemonData(request, limit = 10) {
-    const edges = request.join(", ");
+export async function getPokemonData(query) {
     try {
         const response = await axiosInstance.post("", {
-            query: `query { pokemons(query: { limit: ${limit}, offset: 0 }) { edges { ${edges} } } }`
+            query
         });
         return {
             data: response.data.data

@@ -43,7 +43,11 @@ export default {
   },
   methods: {
     toggleFavorite() {
-      console.log(this.pokemon.id, this.pokemon.isFavorite);
+      console.log(
+        "todo - favorite should be componentized",
+        this.pokemon.id,
+        this.pokemon.isFavorite
+      );
     },
   },
 };
