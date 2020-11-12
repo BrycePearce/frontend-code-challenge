@@ -1,18 +1,14 @@
 <template>
-  <main>
-    <Card />
-    <Card />
-
-    <Card />
-
-    <Card />
-
-    <Card />
+  <main v-if="$store.state.pokemonList.length > 0">
+    <template v-for="pokemon in $store.state.pokemonList">
+      <Card :pokemon="pokemon" :key="pokemon.id" />
+    </template>
   </main>
+  <main v-else>Loading...</main>
 </template>
 
 <script>
-// @ is an alias to /src
+// Components
 import Card from "@/components/Card.vue";
 
 export default {

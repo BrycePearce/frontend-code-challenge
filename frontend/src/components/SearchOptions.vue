@@ -100,8 +100,17 @@ export default {
     fill: $base-green;
     height: 100%;
 
+    :hover {
+      background-color: $base-gray;
+    }
+
     button {
       all: unset;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+
       cursor: pointer;
     }
 

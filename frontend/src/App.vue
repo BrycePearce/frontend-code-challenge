@@ -18,10 +18,20 @@
 <script>
 import SearchOptions from "@/components/SearchOptions.vue";
 
+// Api
+import * as api from "./api/api";
+
 export default {
   name: "home",
   components: {
     SearchOptions,
+  },
+  async mounted() {
+    const { data } = await api.getPokemonData(
+      ["name", "types", "isFavorite", "id", "image"],
+      -1
+    );
+    this.$store.dispatch("setPokemonList", data);
   },
 };
 </script>
@@ -44,6 +54,7 @@ nav {
   display: flex;
   border: 1px solid $base-green;
   margin-bottom: 1rem;
+  cursor: pointer;
 
   a {
     all: unset;

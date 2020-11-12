@@ -2,19 +2,23 @@
   <article class="card">
     <div class="body">
       <div class="artwork-wrapper">
-        <img src="https://img.pokemondb.net/artwork/pikachu.jpg" alt="todo" />
+        <img :src="pokemon.image" :alt="pokemon.name" />
       </div>
       <div class="footer">
         <div class="info">
-          <h5>Bulbasaur</h5>
+          <h5>{{ pokemon.name }}</h5>
           <ul>
-            <li>Grass</li>
-            <li>Poison</li>
+            <li v-for="type in pokemon.types" :key="type">{{ type }}</li>
           </ul>
         </div>
         <div class="favorite">
-          <button class="btn-favorite">
+          <button
+            @click="toggleFavorite"
+            class="btn-favorite"
+            :aria-pressed="`${pokemon.isFavorite}`"
+          >
             <svg
+              :class="{ 'fill-red': pokemon.isFavorite }"
               xmlns="http://www.w3.org/2000/svg"
               height="24"
               viewBox="0 0 24 24"
@@ -34,6 +38,14 @@
 <script>
 export default {
   name: "Card",
+  props: {
+    pokemon: Object,
+  },
+  methods: {
+    toggleFavorite() {
+      console.log(this.pokemon.id, this.pokemon.isFavorite);
+    },
+  },
 };
 </script>
 
@@ -49,6 +61,9 @@ export default {
   width: 9.5rem;
 
   .body {
+    display: flex;
+    flex-direction: column;
+
     .footer {
       display: flex;
       justify-content: space-around;
@@ -73,6 +88,7 @@ export default {
       }
 
       .favorite {
+        cursor: pointer;
         .btn-favorite {
           all: unset;
           cursor: pointer;
@@ -88,14 +104,21 @@ export default {
   }
 
   .artwork-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 0.2rem;
+    height: 13rem;
 
     img {
-      width: 100%;
-      height: 100%;
-      vertical-align: middle;
-      margin: 2rem 0;
+      object-fit: cover;
+      max-width: 100%;
+      max-height: 100%;
     }
+  }
+
+  .fill-red {
+    fill: red;
   }
 }
 </style>
