@@ -1,6 +1,9 @@
 import Vue from "vue";
 import Router from "vue-router";
+
+// Pages
 import ViewAll from "./views/ViewAll.vue";
+import About from "./views/About.vue";
 
 Vue.use(Router);
 
@@ -13,13 +16,8 @@ export default new Router({
       component: ViewAll
     },
     {
-      path: "/about",
-      name: "about",
-      // route level code-splitting
-      // this generates a separate chunk (about.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () =>
-        import( /* webpackChunkName: "about" */ "./views/About.vue")
+      path: ":pokemonName",
+      component: About
     }
   ]
 });

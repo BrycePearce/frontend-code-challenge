@@ -95,7 +95,6 @@ export default {
         cursor: pointer;
         .btn-favorite {
           all: unset;
-          cursor: pointer;
           height: 100%;
         }
         align-self: center;
@@ -111,6 +110,7 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
     padding: 0.2rem;
     height: 13rem;
 

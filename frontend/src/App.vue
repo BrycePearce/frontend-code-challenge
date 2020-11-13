@@ -3,10 +3,20 @@
     <div v-if="loading.hasError">There was a problem loading your data</div>
     <template v-else>
       <div class="header">
-        <nav>
-          <router-link to="/">All</router-link>
-          <router-link to="/about">Favorites</router-link>
-        </nav>
+        <div class="filter">
+          <button
+            @click="toggleFavoriteFilter(false)"
+            :class="{ 'filter-active': !isFavoriteFilterActive }"
+          >
+            All
+          </button>
+          <button
+            @click="toggleFavoriteFilter(true)"
+            :class="{ 'filter-active': isFavoriteFilterActive }"
+          >
+            Favorites
+          </button>
+        </div>
         <SearchOptions></SearchOptions>
       </div>
 
@@ -39,6 +49,11 @@ export default {
   mounted() {
     this.setPokemonDataStore();
   },
+  computed: {
+    isFavoriteFilterActive() {
+      return this.$store.state.searchPreference.favorite;
+    },
+  },
   methods: {
     async setPokemonDataStore() {
       const basicPokemonDataQuery =
@@ -52,6 +67,12 @@ export default {
         this.loading.hasError = true;
       }
     },
+    toggleFavoriteFilter(updatedValue) {
+      this.$store.dispatch("setSearchPreferences", {
+        modifiedKey: "favorite",
+        updatedValue,
+      });
+    },
   },
 };
 </script>
@@ -64,19 +85,20 @@ body {
   font-family: "Segoe UI", "Open Sans", "Helvetica Neue", sans-serif;
 }
 
+// Header
+
 .header {
   box-shadow: 0 2px 3px rgba(68, 66, 66, 0.5);
   padding: 1rem;
 }
 
-// Header
-nav {
+.filter {
   display: flex;
   border: 1px solid $base-green;
   margin-bottom: 1rem;
   cursor: pointer;
 
-  a {
+  button {
     all: unset;
     flex-grow: 1;
     text-align: center;
@@ -86,7 +108,7 @@ nav {
     padding: $interactable-size;
   }
 
-  .router-link-exact-active {
+  .filter-active {
     background: $base-green;
     color: white;
   }

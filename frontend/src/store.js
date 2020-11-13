@@ -9,7 +9,8 @@ export default new Vuex.Store({
     searchPreference: {
       text: "",
       type: "",
-      view: "grid"
+      view: "grid",
+      favorite: false
     }
   },
   mutations: {

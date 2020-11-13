@@ -20,21 +20,24 @@ export default {
   },
   computed: {
     filteredPokemonList() {
-      const { text, type } = this.$store.state.searchPreference;
+      const { text, type, favorite } = this.$store.state.searchPreference;
+      const pokemonList = this.$store.state.pokemonList;
       const isFilteringByType = type !== "";
+      const isFilteringByFavorite = favorite;
 
-      return this.$store.state.pokemonList.filter((pokemon) => {
-        const matchesType = pokemon.types.includes(type);
-        const matchesName = pokemon.name
-          .toLowerCase()
-          .includes(text.toLowerCase());
+      const filterByName = (pokemon) =>
+        pokemon.name.toLowerCase().includes(text.toLowerCase());
 
-        if (isFilteringByType) {
-          return matchesName && matchesType;
-        }
+      const filterByType = (pokemon) =>
+        isFilteringByType ? pokemon.types.includes(type) : true;
 
-        return matchesName;
-      });
+      const filterByFavorite = (pokemon) =>
+        isFilteringByFavorite ? pokemon.types.isFavorite : true;
+
+      return pokemonList
+        .filter(filterByName)
+        .filter(filterByType)
+        .filter(filterByFavorite);
     },
   },
 };
