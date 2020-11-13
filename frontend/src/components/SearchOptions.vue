@@ -13,7 +13,7 @@
       @change="updatePreferenceStore('type', selectedFilter)"
       aria-label="Type"
     >
-      <option value="" disabled selected hidden>Type</option>
+      <option value="" selected>Type</option>
       <option v-for="filter in filterTypes" :key="filter">{{ filter }}</option>
     </select>
     <div class="filter-btns">

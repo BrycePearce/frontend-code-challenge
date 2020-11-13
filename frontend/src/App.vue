@@ -1,17 +1,20 @@
 <template>
   <div id="app">
-    <div class="header">
-      <nav>
-        <router-link to="/">All</router-link>
-        <router-link to="/about">Favorites</router-link>
-      </nav>
-      <SearchOptions></SearchOptions>
-    </div>
+    <div v-if="loading.hasError">There was a problem loading your data</div>
+    <template v-else>
+      <div class="header">
+        <nav>
+          <router-link to="/">All</router-link>
+          <router-link to="/about">Favorites</router-link>
+        </nav>
+        <SearchOptions></SearchOptions>
+      </div>
 
-    <!-- Body -->
-    <transition name="fade" mode="out-in">
-      <router-view />
-    </transition>
+      <!-- Body -->
+      <transition name="fade" mode="out-in">
+        <router-view />
+      </transition>
+    </template>
   </div>
 </template>
 
@@ -26,6 +29,13 @@ export default {
   components: {
     SearchOptions,
   },
+  data() {
+    return {
+      loading: {
+        hasError: false,
+      },
+    };
+  },
   mounted() {
     this.setPokemonDataStore();
   },
@@ -35,7 +45,12 @@ export default {
         "query { pokemons(query: { limit: -1, offset: 0 }) { edges { name, types, isFavorite, id, image } } }";
 
       const { data } = await api.getPokemonData(basicPokemonDataQuery);
-      this.$store.dispatch("setPokemonList", data);
+
+      if (data) {
+        this.$store.dispatch("setPokemonList", data);
+      } else {
+        this.loading.hasError = true;
+      }
     },
   },
 };
