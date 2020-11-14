@@ -1,8 +1,8 @@
 <template>
-  <div class="container">
+  <div v-if="loading.success" class="container">
     <div class="card">
       <div class="artwork-wrapper">
-        <img src="https://img.pokemondb.net/artwork/raichu.jpg" />
+        <img :src="pokemon.image" :alt="pokemon.name" />
         <button class="audio">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -21,45 +21,97 @@
         <div class="top">
           <div class="title">
             <div class="left">
-              <h1>Raichu</h1>
-              <span>Electric</span>
+              <h1>{{ pokemon.name }}</h1>
+              <span v-for="type in pokemon.types" :key="type">{{ type }}</span>
             </div>
-            <div class="right">< 3</div>
+            <div class="right">
+              <Favorite :id="pokemon.id" :isFavorite="pokemon.isFavorite" />
+            </div>
           </div>
           <div class="progress">
             <div class="progress-combat-power"></div>
-            <b>CP: 891</b>
+            <b>CP: {{ pokemon.maxCP }}</b>
           </div>
 
           <div class="progress">
             <div class="progress-health-points"></div>
-            <b>HP: 1008</b>
+            <b>HP: {{ pokemon.maxHP }}</b>
           </div>
         </div>
         <div class="measurements-group">
           <div class="measurement">
             <b>Weight</b>
-            <span>7.88kg - 10.13kg</span>
+            <span>
+              {{ pokemon.weight.minimum }} - {{ pokemon.weight.maximum }}
+            </span>
           </div>
           <div class="measurement">
             <b class="classification">Height</b>
-            <span>0.44m - 0.56m</span>
+            <span>
+              {{ pokemon.height.minimum }} - {{ pokemon.height.maximum }}
+            </span>
           </div>
         </div>
       </div>
     </div>
-    <h2>Evolutions</h2>
-    <!-- <Card></Card> -->
+    <div v-if="hasEvolutions">
+      <h2>Evolutions</h2>
+      <div class="evolutions">
+        <template v-for="pokemon in pokemon.evolutions">
+          <Card :pokemon="pokemon" :key="pokemon.id"></Card>
+        </template>
+      </div>
+    </div>
   </div>
+  <div v-else-if="loading.error">There was a problem loading your Pokemon</div>
+  <div v-else>... Loading ...</div>
 </template>
 
 <script>
 import Card from "@/components/Card.vue";
+import Favorite from "@/components/Favorite.vue";
+
+// Api
+import * as api from "@/api/api.js";
 
 export default {
   name: "About",
   components: {
     Card,
+    Favorite,
+  },
+  data() {
+    return {
+      pokemon: {},
+      loading: {
+        inFlight: false,
+        error: false,
+        success: false,
+      },
+    };
+  },
+  computed: {
+    hasEvolutions() {
+      return this.pokemon.evolutions && this.pokemon.evolutions.length > 0;
+    },
+  },
+  mounted() {
+    const { pokemonName } = this.$router.history.current.params;
+    this.getPokemon(pokemonName);
+  },
+  methods: {
+    async getPokemon(name) {
+      this.loading.inFlight = true;
+      const detailedPokemonDataQuery = `query {pokemonByName(name: "${name}") { name, types, isFavorite, id, image, sound, maxCP, maxHP, weight { minimum, maximum}, height { minimum, maximum}, evolutions { name, isFavorite, id, image } } }`;
+      const { data } = await api.getPokemonData(detailedPokemonDataQuery);
+      if (data.pokemonByName) {
+        this.pokemon = data.pokemonByName;
+        this.loading.success = true;
+      } else {
+        this.loading.error = true;
+      }
+      this.loading.inFlight = false;
+    },
   },
 };
 </script>
@@ -162,15 +214,22 @@ export default {
         display: flex;
         flex-direction: column;
         align-items: center;
-        width: 50%;
-        padding: 16px;
+        width: 100%;
+        padding: 1rem;
         *:first-child {
-          margin-bottom: 8px;
+          margin-bottom: 0.5rem;
         }
       }
       .measurement:first-child {
         border-right: 1px solid #cccccc;
       }
+    }
+  }
+  .evolutions {
+    display: flex;
+    flex-wrap: wrap;
+    article:not(:first-child) {
+      margin-left: 1rem;
     }
   }
 }

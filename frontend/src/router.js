@@ -16,7 +16,7 @@ export default new Router({
       component: ViewAll,
     },
     {
-      path: ":pokemonName",
+      path: "/:pokemonName",
       name: "About",
       component: About
     }

@@ -19,10 +19,9 @@
         </div>
         <SearchOptions></SearchOptions>
       </div>
-
       <!-- Body -->
       <transition name="fade" mode="out-in">
-        <router-view />
+        <router-view :key="$route.path" />
       </transition>
     </template>
   </div>
@@ -52,6 +51,14 @@ export default {
   computed: {
     isFavoriteFilterActive() {
       return this.$store.state.searchPreference.favorite;
+    },
+    isOnHomePage() {
+      console.log(this.$router.currentRoute.name);
+      console.log(" todo ---- does not work");
+      const baseRoute = this.$router.options.routes.find(
+        (route) => route.path === "/"
+      );
+      return this.$router.currentRoute.name === baseRoute.name;
     },
   },
   methods: {
