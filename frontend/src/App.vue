@@ -1,8 +1,7 @@
 <template>
   <div id="app">
-    <div v-if="loading.hasError">There was a problem loading your data</div>
-    <template v-else>
-      <div class="header">
+    <div class="search-header">
+      <template v-if="isHomepage">
         <div class="filter">
           <button
             @click="toggleFavoriteFilter(false)"
@@ -18,12 +17,26 @@
           </button>
         </div>
         <SearchOptions></SearchOptions>
-      </div>
-      <!-- Body -->
-      <transition name="fade" mode="out-in">
-        <router-view :key="$route.path" />
-      </transition>
-    </template>
+      </template>
+      <!-- Back Button -->
+      <router-link v-else to="/">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="24"
+          viewBox="0 0 24 24"
+          width="24"
+        >
+          <path d="M0 0h24v24H0z" fill="none" />
+          <path
+            d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"
+          />
+        </svg>
+      </router-link>
+    </div>
+    <!-- Body -->
+    <transition name="fade" mode="out-in">
+      <router-view :key="$route.path" />
+    </transition>
   </div>
 </template>
 
@@ -40,10 +53,18 @@ export default {
   },
   data() {
     return {
-      loading: {
-        hasError: false,
-      },
+      isHomepage: this.$route.name === "ViewAll",
     };
+  },
+  watch: {
+    $route(to) {
+      const isLoadingAboutPage = to.name === "About";
+      if (isLoadingAboutPage) {
+        this.isHomepage = false;
+      } else {
+        this.isHomepage = true;
+      }
+    },
   },
   mounted() {
     this.setPokemonDataStore();
@@ -51,14 +72,6 @@ export default {
   computed: {
     isFavoriteFilterActive() {
       return this.$store.state.searchPreference.favorite;
-    },
-    isOnHomePage() {
-      console.log(this.$router.currentRoute.name);
-      console.log(" todo ---- does not work");
-      const baseRoute = this.$router.options.routes.find(
-        (route) => route.path === "/"
-      );
-      return this.$router.currentRoute.name === baseRoute.name;
     },
   },
   methods: {
@@ -70,8 +83,6 @@ export default {
 
       if (data) {
         this.$store.dispatch("setPokemonList", data);
-      } else {
-        this.loading.hasError = true;
       }
     },
     toggleFavoriteFilter(updatedValue) {
@@ -94,7 +105,7 @@ body {
 
 // Header
 
-.header {
+.search-header {
   box-shadow: 0 2px 3px rgba(68, 66, 66, 0.5);
   padding: 1rem;
 }
