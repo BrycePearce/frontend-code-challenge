@@ -13,10 +13,11 @@ export default new Router({
   routes: [{
       path: "/",
       name: "ViewAll",
-      component: ViewAll
+      component: ViewAll,
     },
     {
       path: ":pokemonName",
+      name: "About",
       component: About
     }
   ]

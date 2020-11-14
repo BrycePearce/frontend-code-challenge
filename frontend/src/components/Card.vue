@@ -1,7 +1,7 @@
 <template>
   <article class="card">
     <div class="body">
-      <div class="artwork-wrapper">
+      <div @click="loadDetailPage(pokemon.name)" class="artwork-wrapper">
         <img :src="pokemon.image" :alt="pokemon.name" />
       </div>
       <div class="footer">
@@ -48,6 +48,12 @@ export default {
         this.pokemon.id,
         this.pokemon.isFavorite
       );
+    },
+    loadDetailPage(pokemonName) {
+      this.$router.push({
+        name: "About",
+        params: { pokemonName },
+      });
     },
   },
 };
