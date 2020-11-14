@@ -11,7 +11,7 @@
             <li v-for="type in pokemon.types" :key="type">{{ type }}</li>
           </ul>
         </div>
-        <Favorite :id="pokemon.id" :isFavorite="pokemon.isFavorite"></Favorite>
+        <Favorite :id="pokemon.id" :state="pokemon.isFavorite"></Favorite>
       </div>
     </div>
   </article>
@@ -29,13 +29,6 @@ export default {
     Favorite,
   },
   methods: {
-    toggleFavorite() {
-      console.log(
-        "todo - favorite should be componentized",
-        this.pokemon.id,
-        this.pokemon.isFavorite
-      );
-    },
     loadDetailPage(pokemonName) {
       this.$router.push({
         name: "About",

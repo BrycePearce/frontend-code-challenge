@@ -3,7 +3,11 @@
     <div class="card">
       <div class="artwork-wrapper">
         <img :src="pokemon.image" :alt="pokemon.name" />
-        <button class="audio">
+        <button
+          @click="playSound(pokemon.sound)"
+          :aria-label="`Play ${pokemon.name} sound`"
+          class="audio"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             height="48"
@@ -22,10 +26,12 @@
           <div class="title">
             <div class="left">
               <h1>{{ pokemon.name }}</h1>
-              <span v-for="type in pokemon.types" :key="type">{{ type }}</span>
+              <ul>
+                <li v-for="type in pokemon.types" :key="type">{{ type }}</li>
+              </ul>
             </div>
             <div class="right">
-              <Favorite :id="pokemon.id" :isFavorite="pokemon.isFavorite" />
+              <Favorite :id="pokemon.id" :state="pokemon.isFavorite" />
             </div>
           </div>
           <div class="progress">
@@ -112,6 +118,9 @@ export default {
       }
       this.loading.inFlight = false;
     },
+    playSound(sound) {
+      return new Audio(sound).play();
+    },
   },
 };
 </script>
@@ -135,6 +144,7 @@ export default {
       align-items: center;
       height: 20rem;
       padding: 0.2rem;
+
       img {
         object-fit: cover;
         max-width: 100%;
@@ -178,9 +188,18 @@ export default {
           padding: 0;
           font-size: x-large;
         }
-        span {
+        ul {
+          display: flex;
+          list-style: none;
+          margin: 0;
+          padding: 0;
           font-size: small;
           font-weight: 500;
+
+          li:not(:last-child)::after {
+            white-space: pre;
+            content: ", ";
+          }
         }
       }
     }

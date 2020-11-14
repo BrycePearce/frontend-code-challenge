@@ -21,19 +21,30 @@
 </template>
 
 <script>
+import * as api from "@/api/api";
+
 export default {
   name: "Favorite",
   props: {
     id: String,
-    isFavorite: Boolean,
+    state: Boolean,
+  },
+  data() {
+    return {
+      isFavorite: this.state,
+    };
   },
   methods: {
-    toggleFavorite() {
-      console.log(
-        "todo - favorite should be componentized",
-        this.id,
-        this.isFavorite
-      );
+    async toggleFavorite() {
+      const mutation = this.isFavorite
+        ? "unFavoritePokemon"
+        : "favoritePokemon";
+
+      const updateQuery = `mutation {${mutation}(id: "${this.id}") {isFavorite}}`;
+      const { data } = await api.getPokemonData(updateQuery);
+      if (data) {
+        this.isFavorite = data[mutation].isFavorite;
+      }
     },
   },
 };
