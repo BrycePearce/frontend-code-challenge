@@ -37,9 +37,8 @@ export default new Vuex.Store({
       favorite,
       limit = 151
     }) {
-      const isFilteringByType = type !== ""; // todo, do I need this
       const filterQuery = `query { pokemons(query: { limit: ${limit}, offset: 0, search: "${text}", filter: { type: "${
-        isFilteringByType ? type : ""
+        type
       }", isFavorite: ${favorite} } }) { edges { name, types, isFavorite, id, image } } }`;
       const {
         data

@@ -3,6 +3,8 @@
     <button
       @click="toggleFavorite"
       class="btn-favorite"
+      type="button"
+      aria-label="favorite"
       :aria-pressed="`${isFavorite}`"
     >
       <svg

@@ -7,7 +7,6 @@
       type="text"
       aria-label="Search"
     />
-    <!-- todo: clean this up, arrow rotation/scroll -->
     <select
       v-model="selectedFilter"
       @change="updatePreferenceStore('type', selectedFilter)"
@@ -19,14 +18,22 @@
       </option>
     </select>
     <div class="filter-btns">
-      <button @click="updatePreferenceStore('view', 'list')">
+      <button
+        @click="updatePreferenceStore('view', 'list')"
+        type="button"
+        aria-label="list view"
+      >
         <svg height="50" viewBox="0 0 24 24" width="50">
           <path d="M0 0h24v24H0z" fill="none" />
           <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
         </svg>
       </button>
       <div class="vertical-spacer"></div>
-      <button @click="updatePreferenceStore('view', 'grid')">
+      <button
+        @click="updatePreferenceStore('view', 'grid')"
+        type="button"
+        aria-label="grid view"
+      >
         <svg height="50" viewBox="0 0 24 24" width="50">
           <path d="M0 0h24v24H0z" fill="none" />
           <path
@@ -39,8 +46,6 @@
 </template>
 
 <script>
-import * as api from "../api/api";
-
 export default {
   name: "SearchOptions",
   data() {
@@ -66,6 +71,7 @@ export default {
 <style scoped lang="scss">
 @import "@/assets/_variables.scss";
 
+// Grid View
 .search-options {
   display: grid;
   column-gap: 0.5rem;
@@ -167,4 +173,6 @@ export default {
     }
   }
 }
+
+// List view
 </style>

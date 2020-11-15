@@ -1,5 +1,5 @@
 <template>
-  <article class="card">
+  <article :class="`card-${$store.state.searchPreference.view}`">
     <div class="body">
       <div @click="loadDetailPage(pokemon.name)" class="artwork-wrapper">
         <img :src="pokemon.image" :alt="pokemon.name" />
@@ -42,7 +42,7 @@ export default {
 <style scoped lang="scss">
 @import "@/assets/_variables.scss";
 
-.card {
+.card-grid {
   display: flex;
   position: relative;
   flex-direction: column;
@@ -77,20 +77,79 @@ export default {
         }
       }
     }
+
+    .artwork-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      padding: 0.2rem;
+      height: 13rem;
+
+      img {
+        object-fit: cover;
+        max-width: 100%;
+        max-height: 100%;
+      }
+    }
   }
+}
 
-  .artwork-wrapper {
+.card-list {
+  display: flex;
+  border: 2px solid $base-gray;
+  border-radius: 0.25rem;
+  margin: 1rem;
+  .body {
     display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    padding: 0.2rem;
-    height: 13rem;
+    width: 100%;
 
-    img {
-      object-fit: cover;
-      max-width: 100%;
-      max-height: 100%;
+    .footer {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      background-color: $base-gray;
+      padding: 0.5rem 0;
+
+      .info {
+        margin-left: 1rem;
+      }
+      h5 {
+        font-size: large;
+        margin: 0;
+      }
+
+      ul {
+        display: flex;
+        list-style: none;
+        margin: 0;
+        padding: 0;
+
+        li:not(:last-child)::after {
+          white-space: pre;
+          content: ", ";
+        }
+      }
+    }
+
+    .artwork-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      padding: 0.2rem;
+      height: 3rem;
+      width: 3rem;
+
+      img {
+        object-fit: cover;
+        max-width: 100%;
+        max-height: 100%;
+      }
+    }
+
+    .favorite {
+      margin-right: 1rem;
     }
   }
 }

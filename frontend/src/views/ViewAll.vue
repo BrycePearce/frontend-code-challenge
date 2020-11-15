@@ -1,5 +1,8 @@
 <template>
-  <main v-if="$store.state.pokemonList.length > 0">
+  <main
+    v-if="$store.state.pokemonList.length > 0"
+    :class="`main-${$store.state.searchPreference.view}`"
+  >
     <template v-for="pokemon in $store.state.pokemonList">
       <Card :pokemon="pokemon" :key="pokemon.id" />
     </template>
@@ -21,11 +24,15 @@ export default {
 </script>
 
 <style scoped>
-main {
+.main-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(10rem, 1fr));
   padding: 1rem 0.5rem;
   row-gap: 1rem;
+}
+
+.main-list {
+  margin-top: 1rem;
 }
 
 .error-message {
