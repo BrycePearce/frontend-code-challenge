@@ -1,6 +1,6 @@
 <template>
-  <main v-if="filteredPokemonList.length > 0">
-    <template v-for="pokemon in filteredPokemonList">
+  <main v-if="$store.state.pokemonList.length > 0">
+    <template v-for="pokemon in $store.state.pokemonList">
       <Card :pokemon="pokemon" :key="pokemon.id" />
     </template>
   </main>
@@ -10,35 +10,12 @@
 </template>
 
 <script>
-// Components
 import Card from "@/components/Card.vue";
 
 export default {
   name: "ViewAll",
   components: {
     Card,
-  },
-  computed: {
-    filteredPokemonList() {
-      const { text, type, favorite } = this.$store.state.searchPreference;
-      const pokemonList = this.$store.state.pokemonList;
-      const isFilteringByType = type !== "";
-      const isFilteringByFavorite = favorite;
-
-      const filterByName = (pokemon) =>
-        pokemon.name.toLowerCase().includes(text.toLowerCase());
-
-      const filterByType = (pokemon) =>
-        isFilteringByType ? pokemon.types.includes(type) : true;
-
-      const filterByFavorite = (pokemon) =>
-        isFilteringByFavorite ? pokemon.types.isFavorite : true;
-
-      return pokemonList
-        .filter(filterByName)
-        .filter(filterByType)
-        .filter(filterByFavorite);
-    },
   },
 };
 </script>

@@ -1,11 +1,14 @@
 import Vue from "vue";
 import Vuex from "vuex";
 
+import * as api from "@/api/api";
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
     pokemonList: [],
+    pokemonTypes: [],
     searchPreference: {
       text: "",
       type: "",
@@ -17,17 +20,38 @@ export default new Vuex.Store({
     setPokemonList(state, payload) {
       state.pokemonList = payload;
     },
+    setPokemonTypes(state, payload) {
+      state.pokemonTypes = payload;
+    },
     setSearchPreferences(state, payload) {
       state.searchPreference[payload.modifiedKey] = payload.updatedValue;
     }
   },
   actions: {
-    setPokemonList({
+    async setPokemonList({
+      commit,
+      getters
+    }, {
+      text,
+      type,
+      favorite,
+      limit = 151
+    }) {
+      const isFilteringByType = type !== ""; // todo, do I need this
+      const filterQuery = `query { pokemons(query: { limit: ${limit}, offset: 0, search: "${text}", filter: { type: "${
+        isFilteringByType ? type : ""
+      }", isFavorite: ${favorite} } }) { edges { name, types, isFavorite, id, image } } }`;
+      const {
+        data
+      } = await api.getPokemonData(filterQuery);
+
+
+      commit("setPokemonList", data.pokemons.edges);
+    },
+    setPokemonTypes({
       commit
-    }, pokemonList) {
-      // de-reference
-      const payload = [...pokemonList.pokemons.edges];
-      commit("setPokemonList", payload);
+    }, types) {
+      commit("setPokemonTypes", types);
     },
     setSearchPreferences({
       commit

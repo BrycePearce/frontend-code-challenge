@@ -16,7 +16,7 @@
             Favorites
           </button>
         </div>
-        <SearchOptions></SearchOptions>
+        <SearchOptions @update-display="updateDisplay"></SearchOptions>
       </template>
       <!-- Back Button -->
       <router-link v-else to="/">
@@ -67,7 +67,7 @@ export default {
     },
   },
   mounted() {
-    this.setPokemonDataStore();
+    this.initializePokemonData();
   },
   computed: {
     isFavoriteFilterActive() {
@@ -75,21 +75,33 @@ export default {
     },
   },
   methods: {
-    async setPokemonDataStore() {
-      const basicPokemonDataQuery =
-        "query { pokemons(query: { limit: -1, offset: 0 }) { edges { name, types, isFavorite, id, image } } }";
+    async initializePokemonData() {
+      // initialize pokemon list
+      const { text, type, favorite } = this.$store.state.searchPreference;
+      this.$store.dispatch("setPokemonList", { text, type, favorite });
 
-      const { data } = await api.getPokemonData(basicPokemonDataQuery);
-
-      if (data) {
-        this.$store.dispatch("setPokemonList", data);
-      }
+      // initialize pokemon types
+      const pokemonTypesQuery = "query { pokemonTypes }";
+      const { data } = await api.getPokemonData(pokemonTypesQuery);
+      this.$store.dispatch("setPokemonTypes", data.pokemonTypes);
     },
     toggleFavoriteFilter(updatedValue) {
       this.$store.dispatch("setSearchPreferences", {
         modifiedKey: "favorite",
         updatedValue,
       });
+      this.updateDisplay();
+    },
+    updateDisplay(limit) {
+      let preferences = this.$store.state.searchPreference;
+      if (limit) {
+        preferences["limit"] = limit;
+      }
+      this.$store.dispatch("setPokemonList", preferences);
+    },
+    clearFilterPreferences() {
+      // when the user is done searching, clear the filters so they can search again
+      this.$store.dispatch();
     },
   },
 };

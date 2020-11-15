@@ -14,7 +14,9 @@
       aria-label="Type"
     >
       <option value="" selected>Type</option>
-      <option v-for="filter in filterTypes" :key="filter">{{ filter }}</option>
+      <option v-for="filter in $store.state.pokemonTypes" :key="filter">
+        {{ filter }}
+      </option>
     </select>
     <div class="filter-btns">
       <button @click="updatePreferenceStore('view', 'list')">
@@ -41,28 +43,21 @@ import * as api from "../api/api";
 
 export default {
   name: "SearchOptions",
-  mounted() {
-    this.getPokemonTypes();
-  },
   data() {
     return {
-      searchText: "",
-      selectedFilter: "",
-      filterTypes: [],
+      searchText: this.$store.state.searchPreference.text,
+      selectedFilter: this.$store.state.searchPreference.type,
     };
   },
   methods: {
-    async getPokemonTypes() {
-      const pokemonTypesQuery = "query { pokemonTypes }";
-      const { data } = await api.getPokemonData(pokemonTypesQuery);
-      this.filterTypes = data.pokemonTypes;
-    },
     updatePreferenceStore(modifiedKey, updatedValue) {
       const payload = {
         modifiedKey,
         updatedValue,
       };
       this.$store.dispatch("setSearchPreferences", payload);
+
+      this.$emit("update-display");
     },
   },
 };

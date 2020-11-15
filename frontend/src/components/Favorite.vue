@@ -43,7 +43,14 @@ export default {
       const updateQuery = `mutation {${mutation}(id: "${this.id}") {isFavorite}}`;
       const { data } = await api.getPokemonData(updateQuery);
       if (data) {
+        // fill the heart container
         this.isFavorite = data[mutation].isFavorite;
+
+        // dispatch the filter to update results everywhere
+        this.$store.dispatch(
+          "setPokemonList",
+          this.$store.state.searchPreference
+        );
       }
     },
   },
