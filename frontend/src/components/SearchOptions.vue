@@ -51,20 +51,20 @@ export default {
   data() {
     return {
       searchText: this.$store.state.searchPreference.text,
-      selectedFilter: this.$store.state.searchPreference.type,
+      selectedFilter: this.$store.state.searchPreference.type
     };
   },
   methods: {
     updatePreferenceStore(modifiedKey, updatedValue) {
       const payload = {
         modifiedKey,
-        updatedValue,
+        updatedValue
       };
       this.$store.dispatch("setSearchPreferences", payload);
 
       this.$emit("update-display");
-    },
-  },
+    }
+  }
 };
 </script>
 

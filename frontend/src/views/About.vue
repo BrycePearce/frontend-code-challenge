@@ -84,7 +84,7 @@ export default {
   name: "About",
   components: {
     Card,
-    Favorite,
+    Favorite
   },
   data() {
     return {
@@ -92,14 +92,14 @@ export default {
       loading: {
         inFlight: false,
         error: false,
-        success: false,
-      },
+        success: false
+      }
     };
   },
   computed: {
     hasEvolutions() {
       return this.pokemon.evolutions && this.pokemon.evolutions.length > 0;
-    },
+    }
   },
   mounted() {
     const { pokemonName } = this.$router.history.current.params;
@@ -120,8 +120,8 @@ export default {
     },
     playSound(sound) {
       return new Audio(sound).play();
-    },
-  },
+    }
+  }
 };
 </script>
 

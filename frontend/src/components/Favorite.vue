@@ -29,11 +29,11 @@ export default {
   name: "Favorite",
   props: {
     id: String,
-    state: Boolean,
+    state: Boolean
   },
   data() {
     return {
-      isFavorite: this.state,
+      isFavorite: this.state
     };
   },
   methods: {
@@ -42,7 +42,9 @@ export default {
         ? "unFavoritePokemon"
         : "favoritePokemon";
 
-      const updateQuery = `mutation {${mutation}(id: "${this.id}") {isFavorite}}`;
+      const updateQuery = `mutation {${mutation}(id: "${
+        this.id
+      }") {isFavorite}}`;
       const { data } = await api.getPokemonData(updateQuery);
       if (data) {
         // fill the heart container
@@ -54,8 +56,8 @@ export default {
           this.$store.state.searchPreference
         );
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

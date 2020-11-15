@@ -49,11 +49,11 @@ import * as api from "./api/api";
 export default {
   name: "home",
   components: {
-    SearchOptions,
+    SearchOptions
   },
   data() {
     return {
-      isHomepage: this.$route.name === "ViewAll",
+      isHomepage: this.$route.name === "ViewAll"
     };
   },
   watch: {
@@ -64,7 +64,7 @@ export default {
       } else {
         this.isHomepage = true;
       }
-    },
+    }
   },
   mounted() {
     this.initializePokemonData();
@@ -72,7 +72,7 @@ export default {
   computed: {
     isFavoriteFilterActive() {
       return this.$store.state.searchPreference.favorite;
-    },
+    }
   },
   methods: {
     async initializePokemonData() {
@@ -88,7 +88,7 @@ export default {
     toggleFavoriteFilter(updatedValue) {
       this.$store.dispatch("setSearchPreferences", {
         modifiedKey: "favorite",
-        updatedValue,
+        updatedValue
       });
       this.updateDisplay();
     },
@@ -102,8 +102,8 @@ export default {
     clearFilterPreferences() {
       // when the user is done searching, clear the filters so they can search again
       this.$store.dispatch();
-    },
-  },
+    }
+  }
 };
 </script>
 

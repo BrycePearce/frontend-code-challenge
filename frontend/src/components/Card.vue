@@ -23,19 +23,19 @@ import Favorite from "./Favorite";
 export default {
   name: "Card",
   props: {
-    pokemon: Object,
+    pokemon: Object
   },
   components: {
-    Favorite,
+    Favorite
   },
   methods: {
     loadDetailPage(pokemonName) {
       this.$router.push({
         name: "About",
-        params: { pokemonName },
+        params: { pokemonName }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 

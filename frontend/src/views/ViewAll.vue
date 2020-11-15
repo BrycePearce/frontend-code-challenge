@@ -18,8 +18,8 @@ import Card from "@/components/Card.vue";
 export default {
   name: "ViewAll",
   components: {
-    Card,
-  },
+    Card
+  }
 };
 </script>
 
